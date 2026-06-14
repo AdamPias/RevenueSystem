@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="RevenueSystem.Api/RevenueSystem.Api.csproj" />
+  <Project Path="RevenueSystem.Application/RevenueSystem.Application.csproj" />
+  <Project Path="RevenueSystem.Domain/RevenueSystem.Domain.csproj" />
+  <Project Path="RevenueSystem.Infrastructure/RevenueSystem.Infrastructure.csproj" />
+</Solution>
