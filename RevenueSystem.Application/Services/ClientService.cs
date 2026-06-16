@@ -1,5 +1,5 @@
 ﻿using RevenueSystem.Application.DTOs;
-using RevenueSystem.Application.Repositories; // Nowy using
+using RevenueSystem.Application.Repositories;
 using RevenueSystem.Domain.Entities;
 
 namespace RevenueSystem.Application.Services;
@@ -62,10 +62,10 @@ public class ClientService : IClientService
         
         if (client is IndividualClient individualClient)
         {
-            if (individualClient.isDeleted)
+            if (individualClient.IsDeleted)
                 throw new ArgumentException("Klient nie istnieje (został już usunięty).");
 
-            individualClient.isDeleted = true; 
+            individualClient.IsDeleted = true; 
             await _repository.UpdateAsync(individualClient);
         }
     }
@@ -77,12 +77,21 @@ public class ClientService : IClientService
         if (client == null)
             throw new ArgumentException("Klient nie istnieje.");
         
-        if (client is IndividualClient individualClient && individualClient.isDeleted)
+        if (client is IndividualClient individualClient && individualClient.IsDeleted)
             throw new ArgumentException("Klient nie istnieje.");
         
-        if (!string.IsNullOrWhiteSpace(dto.Email)) client.Email = dto.Email;
-        if (!string.IsNullOrWhiteSpace(dto.PhoneNumber)) client.PhoneNumber = dto.PhoneNumber;
-        if (!string.IsNullOrWhiteSpace(dto.Address)) client.Address = dto.Address;
+        client.Email = dto.Email;
+        client.PhoneNumber = dto.PhoneNumber;
+        client.Address = dto.Address;
+        
+        if (client is IndividualClient indClient)
+        {
+            if (!string.IsNullOrEmpty(dto.FirstName))
+                indClient.FirstName = dto.FirstName;
+        
+            if (!string.IsNullOrEmpty(dto.LastName))
+                indClient.LastName = dto.LastName;
+        }
 
         await _repository.UpdateAsync(client);
     }

@@ -70,7 +70,6 @@ public class AuthService : IAuthService
         user.RefreshToken = refreshToken;
         user.RefreshTokenExpiresAt = DateTime.UtcNow.AddDays(7);
         
-        // Zapisujemy zmiany przez repozytorium
         await _userRepository.UpdateUserAsync(user);
 
         return new TokensDto(accessToken, refreshToken);

@@ -29,8 +29,7 @@ public class RevenueService : IRevenueService
     {
         if (string.IsNullOrWhiteSpace(currencyCode) || currencyCode.Equals("PLN", StringComparison.OrdinalIgnoreCase))
             return amountInPln;
-
-        // Pobieramy kurs waluty z NBP
+        
         var exchangeRate = await _exchangeRateService.GetExchangeRateAsync(currencyCode);
         
         return Math.Round(amountInPln / exchangeRate, 2);

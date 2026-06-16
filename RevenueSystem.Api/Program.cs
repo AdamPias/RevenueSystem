@@ -88,8 +88,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(s =>
     {
-        s.SwaggerEndpoint("/swagger/v1/swagger.json", "v1"); // Musi wskazywać na plik wygenerowany przez AddSwaggerGen
-        s.RoutePrefix = string.Empty; // Twój pusty prefix!
+        s.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        s.RoutePrefix = string.Empty;
     });
 }
 
@@ -100,20 +100,7 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    
-    if (!context.Softwares.Any())
-    {
-        context.Softwares.Add(new RevenueSystem.Domain.Entities.Software { Name = "System ERP Finanse", Description = "Zarządzanie finansami firmy", CurrentVersion = "1.0", Category = "Finanse", YearlyCost = 5000m });
-        context.Discounts.Add(new RevenueSystem.Domain.Entities.Discount { Name = "Zniżka na start", ValuePercentage = 10m, DateFrom = DateTime.UtcNow.AddDays(-5), DateTo = DateTime.UtcNow.AddDays(15) });
-        context.SaveChanges();
-    }
-
-    if (!context.Users.Any())
-    {
-        context.Users.Add(new RevenueSystem.Domain.Entities.User { Login = "admin", PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123", workFactor: 12), Role = "Admin" });
-        context.Users.Add(new RevenueSystem.Domain.Entities.User { Login = "pracownik", PasswordHash = BCrypt.Net.BCrypt.HashPassword("pracownik123", workFactor: 12), Role = "User" });
-        context.SaveChanges();
-    }
+    DataSeeder.Seed(context);
 }
 
 app.Run();

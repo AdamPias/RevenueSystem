@@ -14,8 +14,6 @@ public class AppDbContext : DbContext
     public DbSet<Discount> Discounts { get; set; }
     public DbSet<Contract> Contracts { get; set; }
     public DbSet<Payment> Payments { get; set; }
-    public DbSet<Subscription> Subscriptions { get; set; }
-    public DbSet<SubscriptionPayment> SubscriptionPayments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -47,18 +45,9 @@ public class AppDbContext : DbContext
             .Property(p => p.Amount)
             .HasColumnType("decimal(18,2)");
 
-        modelBuilder.Entity<Subscription>()
-            .Property(s => s.Price)
-            .HasColumnType("decimal(18,2)");
-
-        modelBuilder.Entity<SubscriptionPayment>()
-            .Property(sp => sp.Amount)
-            .HasColumnType("decimal(18,2)");
-
         modelBuilder.Entity<Discount>()
             .Property(d => d.ValuePercentage)
             .HasColumnType("decimal(5,2)");
-
 
         modelBuilder.Entity<Software>().Property(s => s.Name).HasMaxLength(100).IsRequired();
         modelBuilder.Entity<Software>().Property(s => s.Category).HasMaxLength(50);

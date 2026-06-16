@@ -188,66 +188,6 @@ namespace RevenueSystem.Infrastructure.Migrations
                     b.ToTable("Softwares");
                 });
 
-            modelBuilder.Entity("RevenueSystem.Domain.Entities.Subscription", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("RenewalPeriodMonths")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SoftwareId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
-
-                    b.HasIndex("SoftwareId");
-
-                    b.ToTable("Subscriptions");
-                });
-
-            modelBuilder.Entity("RevenueSystem.Domain.Entities.SubscriptionPayment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("SubscriptionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubscriptionId");
-
-                    b.ToTable("SubscriptionPayments");
-                });
-
             modelBuilder.Entity("RevenueSystem.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -309,6 +249,9 @@ namespace RevenueSystem.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -318,9 +261,6 @@ namespace RevenueSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(11)
                         .HasColumnType("nvarchar(11)");
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
 
                     b.HasIndex("Pesel")
                         .IsUnique()
@@ -359,42 +299,7 @@ namespace RevenueSystem.Infrastructure.Migrations
                     b.Navigation("Contract");
                 });
 
-            modelBuilder.Entity("RevenueSystem.Domain.Entities.Subscription", b =>
-                {
-                    b.HasOne("RevenueSystem.Domain.Entities.Client", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RevenueSystem.Domain.Entities.Software", "Software")
-                        .WithMany()
-                        .HasForeignKey("SoftwareId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Client");
-
-                    b.Navigation("Software");
-                });
-
-            modelBuilder.Entity("RevenueSystem.Domain.Entities.SubscriptionPayment", b =>
-                {
-                    b.HasOne("RevenueSystem.Domain.Entities.Subscription", "Subscription")
-                        .WithMany("Payments")
-                        .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Subscription");
-                });
-
             modelBuilder.Entity("RevenueSystem.Domain.Entities.Contract", b =>
-                {
-                    b.Navigation("Payments");
-                });
-
-            modelBuilder.Entity("RevenueSystem.Domain.Entities.Subscription", b =>
                 {
                     b.Navigation("Payments");
                 });
