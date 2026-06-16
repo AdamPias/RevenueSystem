@@ -31,4 +31,15 @@ public class ClientRepository : IClientRepository
         await _context.SaveChangesAsync();
         return client.Id;
     }
+
+    public async Task<Client?> GetClientByIdAsync(int id)
+    {
+        return await _context.Clients.FirstOrDefaultAsync(c => c.Id == id);
+    }
+    
+    public async Task UpdateAsync(Client client)
+    {
+        _context.Clients.Update(client);
+        await _context.SaveChangesAsync();
+    }
 }

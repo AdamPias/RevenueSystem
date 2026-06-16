@@ -17,7 +17,6 @@ public class RevenueController : ControllerBase
     }
 
     [HttpGet("actual")]
-    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetActualRevenue([FromQuery] int? softwareId, [FromQuery] string? currencyCode)
     {
         var revenue = await _revenueService.GetActualRevenueAsync(softwareId, currencyCode);
@@ -25,7 +24,6 @@ public class RevenueController : ControllerBase
     }
 
     [HttpGet("projected")]
-    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetProjectedRevenue([FromQuery] int? softwareId, [FromQuery] string? currencyCode)
     {
         var revenue = await _revenueService.GetProjectedRevenueAsync(softwareId, currencyCode);

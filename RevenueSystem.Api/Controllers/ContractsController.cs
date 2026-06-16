@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RevenueSystem.Application.DTOs;
 using RevenueSystem.Application.Services;
 
@@ -6,6 +7,7 @@ namespace RevenueSystem.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ContractsController : ControllerBase
 {
     private readonly IContractService _contractService;

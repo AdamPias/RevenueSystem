@@ -49,4 +49,41 @@ public class ClientService : IClientService
 
         return await _repository.AddClientAsync(client);
     }
+    
+    public async Task DeleteClientAsync(int id)
+    {
+        var client = await _repository.GetClientByIdAsync(id);
+    
+        if (client == null)
+            throw new ArgumentException("Klient nie istnieje.");
+        
+        if (client is CorporateClient)
+            throw new ArgumentException("Zgodnie z zasadami, nie można usuwać danych firm.");
+        
+        if (client is IndividualClient individualClient)
+        {
+            if (individualClient.isDeleted)
+                throw new ArgumentException("Klient nie istnieje (został już usunięty).");
+
+            individualClient.isDeleted = true; 
+            await _repository.UpdateAsync(individualClient);
+        }
+    }
+
+    public async Task UpdateClientAsync(int id, UpdateClientDto dto)
+    {
+        var client = await _repository.GetClientByIdAsync(id);
+    
+        if (client == null)
+            throw new ArgumentException("Klient nie istnieje.");
+        
+        if (client is IndividualClient individualClient && individualClient.isDeleted)
+            throw new ArgumentException("Klient nie istnieje.");
+        
+        if (!string.IsNullOrWhiteSpace(dto.Email)) client.Email = dto.Email;
+        if (!string.IsNullOrWhiteSpace(dto.PhoneNumber)) client.PhoneNumber = dto.PhoneNumber;
+        if (!string.IsNullOrWhiteSpace(dto.Address)) client.Address = dto.Address;
+
+        await _repository.UpdateAsync(client);
+    }
 }

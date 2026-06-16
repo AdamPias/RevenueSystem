@@ -7,4 +7,6 @@ public interface IClientRepository
     Task<bool> IsPeselTakenAsync(string pesel);
     Task<bool> IsKrsTakenAsync(string krs);
     Task<int> AddClientAsync(Client client);
+    Task<Client?> GetClientByIdAsync(int id);
+    Task UpdateAsync(Client client); 
 }

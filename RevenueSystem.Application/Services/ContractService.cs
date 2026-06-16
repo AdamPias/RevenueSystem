@@ -38,7 +38,7 @@ public class ContractService : IContractService
         var isReturningClient = await _contractRepository.IsReturningClientAsync(dto.ClientId);
         if (isReturningClient)
         {
-            discountPercentage += 5m; // Dodatkowe 5% dla lojalnych klientów
+            discountPercentage += 5m;
         }
         
         var basePrice = software.YearlyCost;
